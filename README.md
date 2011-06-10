@@ -3,26 +3,26 @@ selfDoc.js: JavaScript that Documents Itself
 
 _selfDoc_ is a JavaScript function that takes a function or object literal (containing a JavaScript application built in a modular style) and returns an object that describes the application's API. This can be combined with a templating tool (_[lm.js][1]_, perhaps) to produce a dynamic HTML document.
 
-  var test = function () {
-    // A function that does nothing
-  };
-  test.subFunction = function () {
-    // Another useless function
-  };
-  selfDoc("Test", test, "A test application using selfDoc.js");
-  // Returns an object describing the app
-  /**
-  {
-    appName: "Test",
-    comment: ["A function that does nothing"],
-    overview: "A test application using selfDoc.js"
-    properties: [{
-      name: "subFunction"
-      comment: ["Another useless function"],
-      implementation: "function () { ... }"
-    }]
-  }
-  */
+    var test = function () {
+        // A function that does nothing
+    };
+    test.subFunction = function () {
+        // Another useless function
+    };
+    selfDoc("Test", test, "A test application using selfDoc.js");
+    // Returns an object describing the app
+    /**
+    {
+        appName: "Test",
+        comment: ["A function that does nothing"],
+        overview: "A test application using selfDoc.js"
+        properties: [{
+            name: "subFunction"
+            comment: ["Another useless function"],
+            implementation: "function () { ... }"
+        }]
+    }
+    */
 
 The documentation is refreshed every time _selfDoc_ is called. _selfDoc_ can be kept alongside unit tests or demos providing a dynamic set of documentation that is always up to date. Combine the resulting object with your favorite templating tool and you have dynamic HTML documentation.
 
