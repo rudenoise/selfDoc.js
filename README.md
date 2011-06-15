@@ -28,7 +28,7 @@ The documentation is refreshed every time _selfDoc_ is called. _selfDoc_ can be 
 
 _selfDoc_ is low on dependencies, a browser is the only requirement. _selfDoc_ coerces the public/current-scope functions to strings, extracting their comments (FireFox/JaegerMonkey removes comments at run time, so functionality is hampered here).
 
-LM.JS by [Joel Hughes][2] is licensed under a Creative Commons Attribution 3.0 Unported License
+selfDoc.js by [Joel Hughes][2] is licensed under a Creative Commons Attribution 3.0 Unported License
 
 [1]: https://github.com/rudenoise/LM.JS
 [2]: http://www.joelhughes.co.uk
