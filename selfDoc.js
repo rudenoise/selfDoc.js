@@ -1,3 +1,4 @@
+// selfDoc.js by Joel Hughes (joelhughes.co.uk) is licensed under a Creative Commons Attribution 3.0 Unported License
 var selfDoc = (function (maxDepth) {
   maxDepth = maxDepth || 10;
   var doc, extract, loopProps, matchComment, replaceComment, splitLine, clean;
