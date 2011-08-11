@@ -48,6 +48,8 @@ test("Root function", function () {
   ok(selfDoc("t2", this.t2).properties[0].implementation ===
     (this.t2.t3 + "").replace(new RegExp("\n *//.*|\r\n *//.*", "g"), ""),
     "converts function to string");
+  ok(selfDoc('t2', this.t2).properties[0].properties[2].properties.length === 0,
+      "doesn't loop strings for properties");
 });
 test("Parse function", function () {
   ok(typeof(selfDoc.parse) === "function", "selfDoc.parse is a function");
