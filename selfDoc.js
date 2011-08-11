@@ -40,8 +40,10 @@ var selfDoc = (function (maxDepth) {
           type: typeof prop[k],
           implementation: (prop[k] + "").replace(clean, ""),
           comment: doc.parse(prop[k]),
-          properties: depth > maxDepth ?
-            ["..."] : loopProps(prop[k], (depth + 1))
+          properties:
+            typeof prop[k] === 'string' ? [] :
+              depth > maxDepth ?
+              ["..."] : loopProps(prop[k], (depth + 1))
         });
       }
     }
