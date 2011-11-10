@@ -82,6 +82,14 @@ test("Parse function", function () {
     // TODO: adjust blank lines?
     ok(selfDoc.parse(this.t4).length === 3, "works for multi line comment blocks");
 });
-test('Life Span', function () {
-    
+test('Life Span ON ROOT FUN', function () {
+    var threeDays, eightDays;
+    threeDays = selfDoc('lt2', this.wk, 'overview', (3 * 24 * 60 * 60), this.now);
+    eightDays = selfDoc('lt2', this.wk, 'overview', (8 * 24 * 60 * 60), this.now);
+    fifteenDays = selfDoc('lt2', this.wk, 'overview', (15 * 24 * 60 * 60), this.now);
+    ok(selfDoc('lt1', this.wk, 'An overview', (5 * 24 * 60 * 60)).hasOwnProperty('freshness'), 'has a freshness rating?');
+    ok(threeDays.freshness === 'old', 'life span of 3 days, aged 1 week id OLD');
+    ok(eightDays.freshness === 'stale', 'life span of 8 days, aged 1 week STALE');
+    ok(fifteenDays.freshness === 'fresh', 'life span of 15 days, aged 1 week id FRESH');
+    // NEXT: ADD TO RECURSIVE PARSE
 });
