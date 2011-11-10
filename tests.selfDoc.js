@@ -33,7 +33,7 @@ module("selfDoc.js", {
         this.wk = function () {
             // week ts: 1320936056434
         };
-        this.month = function () {
+        this.wk.month = function () {
             // month ts: 1320934242034
         };
     },
@@ -87,9 +87,16 @@ test('Life Span ON ROOT FUN', function () {
     threeDays = selfDoc('lt2', this.wk, 'overview', (3 * 24 * 60 * 60), this.now);
     eightDays = selfDoc('lt2', this.wk, 'overview', (8 * 24 * 60 * 60), this.now);
     fifteenDays = selfDoc('lt2', this.wk, 'overview', (15 * 24 * 60 * 60), this.now);
+    noReview = selfDoc('lt2', this.t4, 'overview', (15 * 24 * 60 * 60), this.now);
     ok(selfDoc('lt1', this.wk, 'An overview', (5 * 24 * 60 * 60)).hasOwnProperty('freshness'), 'has a freshness rating?');
     ok(threeDays.freshness === 'old', 'life span of 3 days, aged 1 week id OLD');
     ok(eightDays.freshness === 'stale', 'life span of 8 days, aged 1 week STALE');
     ok(fifteenDays.freshness === 'fresh', 'life span of 15 days, aged 1 week id FRESH');
+    ok(noReview.freshness === 'noReview', 'function with no timestamp is labled NOREVIEW');
     // NEXT: ADD TO RECURSIVE PARSE
+});
+test('Life Span on nested functions', function () {
+    var nest = selfDoc('n1', this.wk, 'sdd', (8 * 24 * 60 * 60), this.now);
+    console.log(nest);
+    ok(nest.properties[0].hasOwnProperty('freshness'), 'nested function have freshness');
 });

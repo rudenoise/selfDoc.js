@@ -1,7 +1,7 @@
 // selfDoc.js (https://github.com/rudenoise/selfDoc.js) by Joel Hughes (joelhughes.co.uk) is licensed under a Creative Commons Attribution 3.0 Unported License
 var selfDoc = (function (maxDepth) {
     maxDepth = maxDepth || 10;
-    var doc, extract, loopProps, matchComment, replaceComment, splitLine, clean, getTS, matchTS;
+    var doc, extract, loopProps, matchComment, replaceComment, splitLine, clean, getTS, matchTS, decorateTS;
     doc = function (appName, root, overview, lifeSpan, now) {
         // Accepts appName/string, root/function/object, overview
         // Returns an objects containing all nested properties, with documentation
@@ -13,19 +13,10 @@ var selfDoc = (function (maxDepth) {
                 appName: appName,
                 overview: overview,
                 comment: doc.parse(root),
-                properties: loopProps(root)
+                properties: loopProps(root, lifeSpan, now)
             };
-            ts = getTS(doc.parse(root));
             if (typeof lifeSpan === 'number') {
-                if (ts !== false) {
-                    console.log(ts, now);
-                    rtn.freshness = ts > (((now - lifeSpan)) ) ?
-                        ts > (now - (lifeSpan / 2)) ?
-                            'fresh' : 'stale' :
-                        'old';
-                } else {
-                
-                }
+                rtn = decorateTS(rtn ,root, lifeSpan, now);
             }
             return rtn;
         }
@@ -46,12 +37,12 @@ var selfDoc = (function (maxDepth) {
     matchTS = new RegExp('[0-9]{13}');
     splitLine = new RegExp("\r\n|\n");
     clean = new RegExp("\n *//.*|\r\n *//.*", "g");
-    loopProps = function (prop, depth) {
+    loopProps = function (prop, depth, lifeSpan, now) {
         depth = depth || 1;
-        var k, arr = [];
+        var k, arr = [], funObj;
         for (k in prop) {
             if (prop.hasOwnProperty(k)) {
-                arr.push({
+                funObj = {
                     name: k,
                     type: typeof prop[k],
                     implementation: (prop[k] + "").replace(clean, ""),
@@ -60,7 +51,11 @@ var selfDoc = (function (maxDepth) {
                         typeof prop[k] === 'string' ? [] :
                             depth > maxDepth ?
                             ["..."] : loopProps(prop[k], (depth + 1))
-                });
+                };
+                if (typeof lifeSpan === 'number' && typeof prop[k] === 'function') {
+                    funObj = decorateTS(funObj , prop[k], lifeSpan, now);
+                }
+                arr.push(funObj);
             }
         }
         return arr;
@@ -80,6 +75,18 @@ var selfDoc = (function (maxDepth) {
         var m = (str + '').match(matchTS);
         return m === null ?
             false : m[0];
+    };
+    decorateTS = function (obj, fun, lifeSpan, now) {
+        ts = getTS(doc.parse(fun));
+        if (ts !== false) {
+            obj.freshness = ts > (((now - lifeSpan)) ) ?
+                ts > (now - (lifeSpan / 2)) ?
+                    'fresh' : 'stale' :
+                'old';
+        } else {
+            obj.freshness = 'noReview';
+        }
+        return obj;
     };
     return doc;
 }());
